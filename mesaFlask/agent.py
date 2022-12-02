@@ -13,7 +13,7 @@ class Car(Agent):
         unique_id: Agent's ID 
         direction: Randomly chosen direction chosen from one of eight directions
     """
-    def __init__(self, unique_id, model, pos,destination,LastFewSteps = [] ,flag = False,lastDirection = None,parking = 0):
+    def __init__(self, unique_id, model, pos,destination,LastFewSteps = [] ,flag = False,lastDirection = None,parking = 1):
         """
         Creates a new random agent.
         Args:
@@ -38,18 +38,22 @@ class Car(Agent):
         
         coin = [1,2]
         cellmates = self.model.grid.get_cell_list_contents([self.pos])
-        neighbors = self.model.grid.iter_neighbors(self.pos,moore = False, include_center=True)        
+        neighbors = self.model.grid.iter_neighbors(self.pos, moore = False, include_center = True)
+        parking_n = self.model.grid.iter_neighbors(self.pos, moore = False, include_center = False)
         
         if self.pos == self.destination:
-            if self.parking <= 10:
+            print(self.parking)
+            if self.parking > 0 and self.parking <= 10:
                 self.parking += 1
                 pass
             else:
                 self.parking = 0
-                for neighbor in neighbors:
-                   if isinstance(neighbor,Road):
-                        self.direction = neighbor.direction
-                        self.MoveToPlace(neighbor.pos)
+                print(parking_n)
+                for neighbor in parking_n:
+                   if isinstance(neighbor, Road):
+                        self.model.grid.move_agent(self, neighbor.pos)
+                        #self.direction = neighbor.direction
+                        #self.MoveToPlace(neighbor.pos)
                 
         
         if len(self.LastFewSteps) >= 200:
@@ -131,34 +135,62 @@ class Car(Agent):
         if self.direction == "Left":
             
             new_position = (self.pos[0] - 1, self.pos[1])
-            cellmates = self.model.grid.get_cell_list_contents([new_position])    
+            cellmates = self.model.grid.get_cell_list_contents([new_position])
+            cell_list = []
             for neighbor in cellmates:
                 if isinstance(neighbor, Car):
-                    pass
+                    return
                 else:
-                    self.model.grid.move_agent(self, new_position)                    
+                    cell_list.append(neighbor)
+            for i in cell_list:
+                if isinstance(neighbor, Traffic_Light):
+                    if neighbor.state == True:
+                        self.model.grid.move_agent(self, new_position)
+                else:
+                    self.model.grid.move_agent(self, new_position)
         elif self.direction == "Right":
             new_position = (self.pos[0] + 1, self.pos[1])
-            cellmates = self.model.grid.get_cell_list_contents([new_position])   
+            cellmates = self.model.grid.get_cell_list_contents([new_position])
+            cell_list = []
             for neighbor in cellmates:
                 if isinstance(neighbor, Car):
-                    pass
-                elif new_position:
-                    self.model.grid.move_agent(self, new_position)                    
+                    return
+                else:
+                    cell_list.append(neighbor)
+            for i in cell_list:
+                if isinstance(neighbor, Traffic_Light):
+                    if neighbor.state == True:
+                        self.model.grid.move_agent(self, new_position)
+                else:
+                    self.model.grid.move_agent(self, new_position)
         elif self.direction == "Down":
             new_position = (self.pos[0], self.pos[1] - 1)
             cellmates = self.model.grid.get_cell_list_contents([new_position])   
+            cell_list = []
             for neighbor in cellmates:
                 if isinstance(neighbor, Car):
-                    pass    
+                    return   
                 else:
-                    self.model.grid.move_agent(self, new_position)                    
+                    cell_list.append(neighbor)
+            for i in cell_list:
+                if isinstance(neighbor, Traffic_Light):
+                    if neighbor.state == True:
+                        self.model.grid.move_agent(self, new_position)
+                else:
+                    self.model.grid.move_agent(self, new_position)
         elif self.direction == "Up":
             new_position = (self.pos[0], self.pos[1] + 1)
-            cellmates = self.model.grid.get_cell_list_contents([new_position])            
+            cellmates = self.model.grid.get_cell_list_contents([new_position])
+            cell_list = []
             for neighbor in cellmates:
                 if isinstance(neighbor, Car):
-                    pass
+                    return
+                else:
+                    cell_list.append(neighbor)
+            for i in cell_list:
+                if isinstance(neighbor, Traffic_Light):
+                    if neighbor.state == True:
+                        self.model.grid.move_agent(self, new_position)
                 else:
                     self.model.grid.move_agent(self, new_position)
         
@@ -175,7 +207,7 @@ class Traffic_Light(Agent):
     """
     Traffic light. Where the traffic lights are in the grid.
     """
-    def __init__(self, unique_id, model, state = False, timeToChange = 10):
+    def __init__(self, unique_id, model, state = False):
         super().__init__(unique_id, model)
         """
         Creates a new Traffic light.
@@ -186,14 +218,35 @@ class Traffic_Light(Agent):
             timeToChange: After how many step should the traffic light change color 
         """
         self.state = state
-        self.timeToChange = timeToChange
         self.rotate = state
+
+    def traffic(self):
+        neighbors = self.model.grid.iter_neighbors(self.pos,moore = False, include_center=True)
+        comrades = []
+
+        for neighbor in neighbors:
+            if isinstance(neighbor, Car):
+                Warn = self.Warning(neighbor)
+                if Warn[0]:
+                    Warn = self.Warning(Warn[1])
+                    if Warn[0]:
+                        Warn = self.Warning(Warn[1])
+                        if Warn[0]:
+                            self.model.timeToChange = 5
+
+    def Warning(self, c):
+        NeighborsOfNeighbor = self.model.grid.iter_neighbors(c.pos, moore = False, include_center=True)
+
+        for neighbor in NeighborsOfNeighbor:
+            if isinstance(neighbor, Car):
+               return [True,neighbor]
+        return [False,"safe"]
 
     def step(self):
         """ 
         To change the state (green or red) of the traffic light in case you consider the time to change of each traffic light.
         """
-        pass
+        self.traffic()
 
 class Destination(Agent):
     """
