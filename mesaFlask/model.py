@@ -2,9 +2,10 @@ from mesa import Model
 from mesa.time import RandomActivation
 from mesa.space import MultiGrid
 from agent import *
+from random import choice
 import json
 
-class TrafficModel(Model):
+class RandomModel(Model):
     """ 
     Creates a new model with random agents.
     Args:
@@ -20,6 +21,8 @@ class TrafficModel(Model):
             lines = baseFile.readlines()
             self.width = len(lines[0])-1
             self.height = len(lines)
+            
+            Des = []
 
             self.grid = MultiGrid(self.width, self.height, torus = False) 
             self.schedule = RandomActivation(self)
@@ -41,23 +44,15 @@ class TrafficModel(Model):
                         self.grid.place_agent(agent, (c, self.height - r - 1))
 
                     elif col == "D":
-                        agent = Destination(f"d_{r*self.width+c}", self)
+                        # Des.append((c,r))
+                        agent = Destination(f"d_{r*self.width+c}", self,(r, c))
                         self.grid.place_agent(agent, (c, self.height - r - 1))
                         
-
-            for i in range(0, 10):
-                car = Car(1000 + i, self, (0, 24))
-                self.grid.place_agent(car, (0, 24))
-                self.schedule.add(car)
-
-            for o in range(11, 20):
-                car = Car(1100 + o, self, (3, 18))
-                self.grid.place_agent(car, (3, 18))
-                self.schedule.add(car)
-
-        #car = Car(1000, self, (0, 24))
-        #self.grid.place_agent(car, (0, 24))
-        #self.schedule.add(car)
+                        
+        Des= [(3,22),(21,22),(13,20),(18,20),(4,19),(2,16),(5,16),(12,16),(18,14),(7,10),(5,4),(12,4),(19,2)]
+        car = Car(1000, self, (0, 24),choice(Des))
+        self.grid.place_agent(car, (0, 24))
+        self.schedule.add(car)
 
         self.num_agents = N
         self.running = True
