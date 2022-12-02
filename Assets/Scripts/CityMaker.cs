@@ -6,7 +6,7 @@ public class CityMaker : MonoBehaviour
 {
     [SerializeField] TextAsset layout;
     [SerializeField] GameObject roadPrefab;
-    [SerializeField] GameObject buildingPrefab;
+    [SerializeField] public List<GameObject> buildingPrefab;
     [SerializeField] GameObject semaphorePrefab;
     [SerializeField] int tileSize;
 
@@ -53,14 +53,14 @@ public class CityMaker : MonoBehaviour
                 x += 1;
             } else if (tiles[i] == 'D') {
                 position = new Vector3(x * tileSize, 0, y * tileSize);
-                tile = Instantiate(buildingPrefab, position, Quaternion.Euler(0, 90, 0));
+                tile = Instantiate(buildingPrefab[0], position, Quaternion.Euler(0, 90, 0));
                 tile.GetComponent<Renderer>().materials[0].color = Color.red;
                 tile.transform.parent = transform;
                 x += 1;
             } else if (tiles[i] == '#') {
                 position = new Vector3(x * tileSize, 0, y * tileSize);
-                tile = Instantiate(buildingPrefab, position, Quaternion.identity);
-                tile.transform.localScale = new Vector3(1, Random.Range(0.5f, 2.0f), 1);
+                tile = Instantiate(buildingPrefab[Random.Range(0, 6)], position, Quaternion.identity);
+                tile.transform.localScale = new Vector3(tile.transform.localScale.x, Random.Range(0.5f, 2.0f), tile.transform.localScale.z);
                 tile.transform.parent = transform;
                 x += 1;
             } else if (tiles[i] == '\n') {

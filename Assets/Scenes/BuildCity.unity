@@ -330,8 +330,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 74629be9c9d8a99bab56a30e333778ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  carPrefab: {fileID: 5314457207480433729, guid: 5806ac46ed351dd4c9af49e07625dbc5, type: 3}
-  lightPrefab: {fileID: 8102729382312259521, guid: ec03db3fda9c46458bf4fb4f61cc11bd, type: 3}
+  lightPrefab: {fileID: 445849410422067347, guid: e5f07fb123da957428a62404a0ed32a5, type: 3}
+  carPrefab:
+  - {fileID: 8924708480398164239, guid: b53bed1a4f0619845a10b731505f8244, type: 3}
+  - {fileID: 4943724649783722585, guid: abf2bc92d2e432d4f8c5baffbf02f67a, type: 3}
+  - {fileID: 2144825980181379732, guid: 3e10704e88a893046af50745919b94c1, type: 3}
+  - {fileID: 274415822601723384, guid: 0e915d7112f030e4db026c2bb36fab62, type: 3}
+  - {fileID: 3918636964817814583, guid: 2aef1b28678f65f4f982f595250f50fc, type: 3}
+  - {fileID: 166607191755761198, guid: 65947657596dc5f4ca601c6a748cafad, type: 3}
   box: 5
   timeToUpdate: 0.2
 --- !u!4 &480943672
@@ -380,7 +386,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   layout: {fileID: 4900000, guid: 1bd49f2e04cdbec48bb774669bd2140d, type: 3}
   roadPrefab: {fileID: 3240343348373693069, guid: 646fc54ff3078ce94bbdbd0f0d4c4a05, type: 3}
-  buildingPrefab: {fileID: 33555395739272859, guid: 10a584233fb38a918af771ddce837268, type: 3}
+  buildingPrefab:
+  - {fileID: 4319273927616839577, guid: 9567bc555f8883141b47f72fe29757a1, type: 3}
+  - {fileID: 3787354742802649098, guid: ba359178f3f83684d808325d80723045, type: 3}
+  - {fileID: 1000275875460848197, guid: 145d030b32b1bd54798ad2c89b68147c, type: 3}
+  - {fileID: 4543151211792927073, guid: 8df112a3e1fd9e441a3c87fa4b58b3c9, type: 3}
+  - {fileID: 4703733940585940487, guid: f787e5a0e21afbe46bcace59edc92d71, type: 3}
+  - {fileID: 4625696572102468418, guid: b1c0e31231badda4b8b1f8cbcdb126ae, type: 3}
+  - {fileID: 1005768701789311335, guid: 9743c319154039545bf284c5e643f8b2, type: 3}
   semaphorePrefab: {fileID: 8102729382312259521, guid: ec03db3fda9c46458bf4fb4f61cc11bd, type: 3}
   tileSize: 1
 --- !u!4 &1457529884

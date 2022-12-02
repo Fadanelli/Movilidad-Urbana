@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Networking;
+using Random = UnityEngine.Random;
 
 [Serializable]
 public class AgentData
@@ -62,7 +63,7 @@ public class LightsData
 
 public class model : MonoBehaviour
 {
-    string serverUrl = "http://localhost:8585";
+    string serverUrl = "https://unity.vicmr.com";
     string getCars = "/getCars";
     string getLights = "/getLights";
     string getShelves = "/getShelves";
@@ -79,7 +80,8 @@ public class model : MonoBehaviour
 
     bool updated, started, upLight, stLight = false;
 
-    public GameObject carPrefab, lightPrefab;
+    public GameObject lightPrefab;
+    public List<GameObject> carPrefab;
     public int box;
     public float timeToUpdate = 5.0f;
     private float timer, dt;
@@ -208,7 +210,7 @@ public class model : MonoBehaviour
                     if(!started)
                     {
                         prevPositions[car.id] = newCarPosition;
-                        cars[car.id] = Instantiate(carPrefab, newCarPosition, Quaternion.identity);
+                        cars[car.id] = Instantiate(carPrefab[Random.Range(0,6)], newCarPosition, Quaternion.identity);
                     }
                     else
                     {
@@ -244,15 +246,17 @@ public class model : MonoBehaviour
                       if(!light.rotate) {
                           lights[light.id] = Instantiate(lightPrefab, newLightPosition, Quaternion.Euler(0, 90, 0));
                       } else {
-                          lights[light.id] = Instantiate(lightPrefab, newLightPosition, Quaternion.identity);
+                          lights[light.id] = Instantiate(lightPrefab, newLightPosition,  Quaternion.identity);
                       }
                   }
                   else
                   {
                       if(light.state) {
-                          lights[light.id].GetComponent<Renderer>().materials[0].color = Color.green;
+                          //lights[light.id].GetComponent<Renderer>().materials[0].color = Color.green;
+                          lights[light.id].GetComponent<Light>().color = Color.green;
                       } else {
-                          lights[light.id].GetComponent<Renderer>().materials[0].color = Color.red;
+                          //lights[light.id].GetComponent<Renderer>().materials[0].color = Color.red;
+                          lights[light.id].GetComponent<Light>().color = Color.red;
                       }
                   }
             }
