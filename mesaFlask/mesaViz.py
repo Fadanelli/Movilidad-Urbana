@@ -55,5 +55,5 @@ print(width, height)
 grid = CanvasGrid(agent_portrayal, width, height, 490, 500)
 server = ModularServer(TrafficModel, [grid], "Traffic Base", model_params)
                        
-server.port = 8521 # The default
+server.port = 7000 # The default
 server.launch()

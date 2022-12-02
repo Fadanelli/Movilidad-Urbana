@@ -87,4 +87,4 @@ def updateModel():
         return jsonify({'message':f'Model updated to step {currentStep}.', 'currentStep':currentStep})
 
 if __name__=='__main__':
-    app.run(host="0.0.0.0", port=8585, debug=True)
+    app.run(host="0.0.0.0", port=7000, debug=True)

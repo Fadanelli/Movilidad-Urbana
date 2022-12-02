@@ -63,6 +63,7 @@ public class LightsData
 
 public class model : MonoBehaviour
 {
+    //string serverUrl = "http://localhost:8585";
     string serverUrl = "https://unity.vicmr.com";
     string getCars = "/getCars";
     string getLights = "/getLights";
